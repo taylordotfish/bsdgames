@@ -50,8 +50,10 @@ getword()
 	FILE *inf;
 	char *wp, *gp;
 	long pos;
+	int tries;
 
 	inf = Dict;
+	tries = 0;
 	for (;;) {
 		pos = (double) rand() / (RAND_MAX + 1.0) * (double) Dict_size;
 		fseek(inf, pos, SEEK_SET);
@@ -66,7 +68,21 @@ getword()
 			if (!islower((unsigned char)*wp))
 				goto cont;
 		break;
-cont:		;
+cont:
+		if (++tries >= 1000) {
+			move(MESGY, MESGX);
+			deleteln();
+			deleteln();
+			deleteln();
+			move(MESGY, MESGX);
+			printw("No suitable word found, try using "
+			    "another dictionary!");
+			leaveok(stdscr, FALSE);
+			refresh();
+			readch();
+			leaveok(stdscr, TRUE);
+			die(0);
+		}
 	}
 	gp = Known;
 	wp = Word;
