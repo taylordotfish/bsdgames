@@ -155,7 +155,7 @@ again:
 		if (inputfp == NULL && test == 0) {
 			for (;;) {
 				ask("black or white? ");
-				getline(buf, sizeof(buf));
+				get_line(buf, sizeof(buf));
 				if (buf[0] == 'b' || buf[0] == 'B') {
 					color = BLACK;
 					break;
@@ -172,7 +172,7 @@ again:
 		}
 	} else {
 		setbuf(stdout, 0);
-		getline(buf, sizeof(buf));
+		get_line(buf, sizeof(buf));
 		if (strcmp(buf, "black") == 0)
 			color = BLACK;
 		else if (strcmp(buf, "white") == 0)
@@ -244,7 +244,7 @@ again:
 		getinput:
 			if (interactive)
 				ask("move? ");
-			if (!getline(buf, sizeof(buf))) {
+			if (!get_line(buf, sizeof(buf))) {
 				curmove = RESIGN;
 				break;
 			}
@@ -256,7 +256,7 @@ again:
 					FILE *fp;
 
 					ask("save file name? ");
-					(void)getline(buf, sizeof(buf));
+					(void)get_line(buf, sizeof(buf));
 					if ((fp = fopen(buf, "w")) == NULL) {
 						glog("cannot create save file");
 						goto getinput;
@@ -309,14 +309,14 @@ again:
 		if (i != RESIGN) {
 		replay:
 			ask("replay? ");
-			if (getline(buf, sizeof(buf)) &&
+			if (get_line(buf, sizeof(buf)) &&
 			    (buf[0] == 'y' || buf[0] == 'Y'))
 				goto again;
 			if (strcmp(buf, "save") == 0) {
 				FILE *fp;
 
 				ask("save file name? ");
-				(void)getline(buf, sizeof(buf));
+				(void)get_line(buf, sizeof(buf));
 				if ((fp = fopen(buf, "w")) == NULL) {
 					glog("cannot create save file");
 					goto replay;
@@ -367,7 +367,7 @@ whatsup(signum)
 		quit();
 top:
 	ask("cmd? ");
-	if (!getline(fmtbuf, sizeof(fmtbuf)))
+	if (!get_line(fmtbuf, sizeof(fmtbuf)))
 		quit();
 	switch (*fmtbuf) {
 	case '\0':

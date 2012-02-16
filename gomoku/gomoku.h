@@ -263,7 +263,7 @@ extern	int	debug;
 
 void	bdinit(struct spotstr *);
 void	init_overlap(void);
-int	getline(char *, int);
+int	get_line(char *, int);
 void	ask(const char *);
 void	dislog(const char *);
 void	bdump(FILE *);

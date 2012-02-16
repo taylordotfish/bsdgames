@@ -221,7 +221,7 @@ game()
 			if (!rflag) {			/* player cuts deck */
 				msg(quiet ? "Cut for crib? " :
 			    "Cut to see whose crib it is -- low card wins? ");
-				getline();
+				get_line();
 			}
 			i = (rand() >> 4) % CARDS;	/* random cut */
 			do {	/* comp cuts deck */
@@ -397,7 +397,7 @@ cut(mycrib, pos)
 		if (!rflag) {	/* random cut */
 			msg(quiet ? "Cut the deck? " :
 		    "How many cards down do you wish to cut the deck? ");
-			getline();
+			get_line();
 		}
 		i = (rand() >> 4) % (CARDS - pos);
 		turnover = deck[i + pos];

@@ -241,7 +241,7 @@ ask(str)
 }
 
 int
-getline(buf, size)
+get_line(buf, size)
 	char *buf;
 	int size;
 {
