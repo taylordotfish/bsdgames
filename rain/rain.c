@@ -70,7 +70,7 @@ main(int argc, char **argv)
 {
 	int x, y, j;
 	long cols, lines;
-	unsigned int delay = 0;
+	unsigned int delay = 120;
 	unsigned long val = 0;
 	int ch;
 	char *ep;
