@@ -153,7 +153,7 @@ update(dummy)
 		}
 		if (pp->altitude > 9)
 			/* "this is impossible" */
-			loser(pp, "exceded flight ceiling.");
+			loser(pp, "exceeded flight ceiling.");
 		if (pp->altitude <= 0) {
 			for (i = 0; i < sp->num_airports; i++)
 				if (pp->xpos == sp->airport[i].x &&
