@@ -910,7 +910,7 @@ leave(eval, mesg)
 	int serrno = errno;
 	fincurs();
 	errno = serrno;
-	err(eval, mesg ? mesg : "");
+	err(eval, "%s", mesg ? mesg : "");
 }
 
 /*
@@ -924,7 +924,7 @@ leavex(eval, mesg)
 	const char	*mesg;
 {
 	fincurs();
-	errx(eval, mesg ? mesg : "");
+	errx(eval, "%s", mesg ? mesg : "");
 }
 
 #if !defined(USE_CURSES) && defined(SIGTSTP)

@@ -132,7 +132,7 @@ opentin()
 	useup(tin.tin);
 	r = rn2(2 * TTSZ);
 	if (r < TTSZ) {
-		pline(tintxts[r].txt);
+		pline("%s", tintxts[r].txt);
 		lesshungry(tintxts[r].nut);
 		if (r == 1) {	/* SALMON */
 			Glib = rnd(15);

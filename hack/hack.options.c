@@ -268,7 +268,7 @@ doset()
 			if (*--eop == ',')
 				*eop = 0;
 		}
-		pline(buf);
+		pline("%s", buf);
 	} else
 		parseoptions(buf, FALSE);
 

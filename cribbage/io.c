@@ -103,13 +103,13 @@ msgcrd(c, brfrank, mid, brfsuit)
 	if (brfrank)
 		addmsg("%1.1s", rankchar[c.rank]);
 	else
-		addmsg(rankname[c.rank]);
+		addmsg("%s", rankname[c.rank]);
 	if (mid != NULL)
-		addmsg(mid);
+		addmsg("%s", mid);
 	if (brfsuit)
 		addmsg("%1.1s", suitchar[c.suit]);
 	else
-		addmsg(suitname[c.suit]);
+		addmsg("%s", suitname[c.suit]);
 	return (TRUE);
 }
 
@@ -192,7 +192,7 @@ infrom(hand, n, prompt)
 		exit(74);
 	}
 	for (;;) {
-		msg(prompt);
+		msg("%s", prompt);
 		if (incard(&crd)) {	/* if card is full card */
 			if (!is_one(crd, hand, n))
 				msg("That's not in your hand");
@@ -345,7 +345,7 @@ number(lo, hi, prompt)
 	int sum;
 
 	for (sum = 0;;) {
-		msg(prompt);
+		msg("%s", prompt);
 		if (!(p = get_line()) || *p == '\0') {
 			msg(quiet ? "Not a number" :
 			    "That doesn't look like a number");

@@ -101,7 +101,7 @@ get_int(prompt)
 
 	for (;;) {
 inter:
-		printf(prompt);
+		printf("%s", prompt);
 		num = 0;
 		for (sp = buf; (c=getchar()) != '\n'; *sp++ = c)
 			if (c == -1)	/* check for interrupted system call */
