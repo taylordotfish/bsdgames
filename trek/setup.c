@@ -234,11 +234,14 @@ setup()
 	for (i = 0; i < NQUADS; i++)
 		for (j = 0; j < NQUADS; j++)
 		{
+			signed char tmp;
 			q = &Quad[i][j];
 			q->klings = q->bases = 0;
 			q->scanned = -1;
 			q->stars = ranf(9) + 1;
-			q->holes = ranf(3) - q->stars / 5;
+			tmp = ranf(3) - q->stars / 5;
+			tmp = tmp < 0 ? 0 : tmp;
+			q->holes = tmp;
 			q->qsystemname = 0;
 		}
 
