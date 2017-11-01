@@ -35,5 +35,11 @@
 #include_next <stdio.h>
 
 #ifndef HAVE_fgetln
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern char *fgetln(FILE *stream, size_t *len);
+#ifdef __cplusplus
+}
+#endif
 #endif
