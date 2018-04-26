@@ -100,7 +100,7 @@ phantasia/setup		phantglobs.o setup.o
 pig			pig.o
 pom			pom.o
 ppt			ppt.o
-primes			pattern.o pr_tbl.o primes.o
+primes			pattern.o pr_tbl.o primes.o spsp.o
 quiz			quiz.o rxp.o lib/fgetln.o
 rain			rain.o lib/getprogname.o
 random			random.o
