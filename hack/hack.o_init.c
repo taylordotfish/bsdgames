@@ -184,14 +184,23 @@ savenames(fd)
 	bwrite(fd, (char *) bases, sizeof bases);
 	bwrite(fd, (char *) objects, sizeof objects);
 	/*
-	 * as long as we use only one version of Hack/Quest we need not save
-	 * oc_name and oc_descr, but we must save oc_uname for all objects
+	 * Save oc_name, oc_descr, as well as oc_uname for all objects
 	 */
 	for (i = 0; i < SIZE(objects); i++) {
 		if (objects[i].oc_uname) {
 			len = strlen(objects[i].oc_uname) + 1;
 			bwrite(fd, (char *) &len, sizeof len);
 			bwrite(fd, objects[i].oc_uname, len);
+		}
+		if (objects[i].oc_name) {
+			len = strlen(objects[i].oc_name) + 1;
+			bwrite(fd, (char *) &len, sizeof len);
+			bwrite(fd, objects[i].oc_name, len);
+		}
+		if (objects[i].oc_descr) {
+			len = strlen(objects[i].oc_descr) + 1;
+			bwrite(fd, (char *) &len, sizeof len);
+			bwrite(fd, objects[i].oc_descr, len);
 		}
 	}
 }
@@ -205,11 +214,23 @@ restnames(fd)
 	mread(fd, (char *) bases, sizeof bases);
 	mread(fd, (char *) objects, sizeof objects);
 	for (i = 0; i < SIZE(objects); i++)
+	{
 		if (objects[i].oc_uname) {
 			mread(fd, (char *) &len, sizeof len);
 			objects[i].oc_uname = (char *) alloc(len);
 			mread(fd, objects[i].oc_uname, len);
 		}
+		if (objects[i].oc_name) {
+			mread(fd, (char *) &len, sizeof len);
+			objects[i].oc_name = (char *) alloc(len);
+			mread(fd, objects[i].oc_name, len);
+		}
+		if (objects[i].oc_descr) {
+			mread(fd, (char *) &len, sizeof len);
+			objects[i].oc_descr = (char *) alloc(len);
+			mread(fd, objects[i].oc_descr, len);
+		}
+	}
 }
 
 int
