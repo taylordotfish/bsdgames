@@ -1,0 +1,24 @@
+From: Stephen Kitt <skitt@debian.org>
+Date: Mon, 11 Oct 2021 14:30:00 +0200
+Subject: Add missing format strings
+
+--- a/canfield/canfield/canfield.c
++++ b/canfield/canfield/canfield.c
+@@ -1647,7 +1647,7 @@
+ 		return;
+ 	clear();
+ 	for (cp = basicinstructions; *cp != 0; cp++)
+-		printw(*cp);
++		printw("%s", *cp);
+ 	refresh();
+ 	getch();
+ 	clear();
+@@ -1660,7 +1660,7 @@
+ 		return;
+ 	clear();
+ 	for (cp = bettinginstructions; *cp != 0; cp++)
+-		printw(*cp);
++		printw("%s", *cp);
+ 	refresh();
+ 	getch();
+ }
