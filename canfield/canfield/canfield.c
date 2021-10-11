@@ -1647,7 +1647,7 @@ instruct()
 		return;
 	clear();
 	for (cp = basicinstructions; *cp != 0; cp++)
-		printw(*cp);
+		printw("%s", *cp);
 	refresh();
 	getch();
 	clear();
@@ -1660,7 +1660,7 @@ instruct()
 		return;
 	clear();
 	for (cp = bettinginstructions; *cp != 0; cp++)
-		printw(*cp);
+		printw("%s", *cp);
 	refresh();
 	getch();
 }
