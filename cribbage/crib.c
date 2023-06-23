@@ -49,6 +49,7 @@ __RCSID("$NetBSD: crib.c,v 1.19 2004/01/27 20:30:29 jsm Exp $");
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "deck.h"
@@ -68,6 +69,16 @@ main(argc, argv)
 	int ch;
 	int fd;
 	int flags;
+
+	f = NULL;
+	fd = open(_PATH_LOG, O_WRONLY | O_CREAT | O_EXCL, 0666);
+	if (fd >= 0)
+		f = fdopen(fd, "w");
+	if (f != NULL) {
+		fprintf(f, "%s\n", "# \"won\" means computer won game.");
+		fprintf(f, "%s\n", "# \"lost\" means computer lost game.");
+		fclose(f);
+	}
 
 	f = fopen(_PATH_LOG, "a");
 	if (f == NULL)
@@ -149,8 +160,8 @@ main(argc, argv)
 	} while (playing);
 
 	if (f != NULL) {
-		(void)fprintf(f, "%s: won %5.5d, lost %5.5d\n",
-		    getlogin(), cgames, pgames);
+		(void)fprintf(f, "%s: won %5.5d, lost %5.5d at %lld\n",
+		    getlogin(), cgames, pgames, (long long)time(NULL));
 		(void) fclose(f);
 	}
 	bye();
