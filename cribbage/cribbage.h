@@ -46,6 +46,10 @@ extern  int		glimit;			/* points to win game */
 
 extern  int		pgames;			/* player's games won */
 extern  int		cgames;			/* comp's games won */
+extern  int		pskunk;			/* player's games skunked */
+extern  int		cskunk;			/* comp's games skunked */
+extern  int		pdblskunk;		/* player's games 2x skunked */
+extern  int     	cdblskunk;		/* comp's games 2x skunked */
 extern  int		gamecount;		/* # games played */
 extern	int		Lastscore[2];		/* previous score for each */
 

@@ -51,11 +51,15 @@ BOOLEAN	rflag		= FALSE;	/* if all cuts random */
 char	explan[128];			/* explanation */
 
 int	cgames		= 0;		/* number games comp won */
+int	cskunk		= 0;		/* number games comp skunked */
+int	cdblskunk	= 0;		/* number games comp 2x skunked */
 int	cscore		= 0;		/* comp score in this game */
 int	gamecount	= 0;		/* number games played */
 int	glimit		= LGAME;	/* game playe to glimit */
 int	knownum		= 0;		/* number of cards we know */
 int	pgames		= 0;		/* number games player won */
+int	pskunk		= 0;		/* number games player skunked */
+int	pdblskunk	= 0;		/* number games player 2x skunked */
 int	pscore		= 0;		/* player score in this game */
 
 CARD	chand[FULLHAND];		/* computer's hand */

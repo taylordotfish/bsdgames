@@ -160,8 +160,17 @@ main(argc, argv)
 	} while (playing);
 
 	if (f != NULL) {
-		(void)fprintf(f, "%s: won %5.5d, lost %5.5d at %lld\n",
-		    getlogin(), cgames, pgames, (long long)time(NULL));
+		char skstr[32] = "";
+		char sk2str[32] = "";
+		if (cskunk > 0 || pskunk > 0)
+			snprintf(skstr, sizeof(skstr), " (sk: %d, %d)",
+			    cskunk, pskunk);
+		if (cdblskunk > 0 || pdblskunk > 0)
+			snprintf(sk2str, sizeof(sk2str), " (2sk: %d, %d)",
+			    cdblskunk, pdblskunk);
+		(void)fprintf(f, "%s: won %5.5d, lost %5.5d at %lld%s%s\n",
+		    getlogin(), cgames, pgames, (long long)time(NULL),
+		    skstr, sk2str);
 		(void) fclose(f);
 	}
 	bye();
