@@ -57,6 +57,26 @@ __RCSID("$NetBSD: crib.c,v 1.19 2004/01/27 20:30:29 jsm Exp $");
 #include "cribcur.h"
 #include "pathnames.h"
 
+static FILE *detailfile = NULL;
+
+static void closeonexec(FILE *);
+
+static void
+closeonexec(f)
+	FILE *f;
+{
+	int fd;
+	int flags;
+
+	fd = fileno(f);
+	flags = fcntl(fd, F_GETFD);
+	if (flags < 0)
+		err(1, "fcntl F_GETFD");
+	flags |= FD_CLOEXEC;
+	if (fcntl(fd, F_SETFD, flags) == -1)
+		err(1, "fcntl F_SETFD");
+}
+
 int	main(int, char *[]);
 
 int
@@ -68,10 +88,12 @@ main(argc, argv)
 	FILE *f;
 	int ch;
 	int fd;
-	int flags;
 	gid_t gid;
+	const char *detailpath;
 
 	f = NULL;
+	detailpath = NULL;
+
 	fd = open(_PATH_LOG, O_WRONLY | O_CREAT | O_EXCL, 0666);
 	if (fd >= 0)
 		f = fdopen(fd, "w");
@@ -93,15 +115,8 @@ main(argc, argv)
 		setregid(gid, gid);
 
 	/* Set close-on-exec flag on log file */
-	if (f != NULL) {
-		fd = fileno(f);
-		flags = fcntl(fd, F_GETFD);
-		if (flags < 0)
-			err(1, "fcntl F_GETFD");
-		flags |= FD_CLOEXEC;
-		if (fcntl(fd, F_SETFD, flags) == -1)
-			err(1, "fcntl F_SETFD");
-	}
+	if (f != NULL)
+		closeonexec(f);
 
 	while ((ch = getopt(argc, argv, "eqr")) != -1)
 		switch (ch) {
@@ -119,6 +134,12 @@ main(argc, argv)
 			(void) fprintf(stderr, "usage: cribbage [-eqr]\n");
 			exit(1);
 		}
+
+	detailpath = getenv("CRIBDETAIL");
+	if (detailpath != NULL && detailpath[0] != '\0')
+		detailfile = fopen(detailpath, "a");
+	if (detailfile != NULL)
+		closeonexec(detailfile);
 
 	initscr();
 	(void)signal(SIGINT, receive_intr);
@@ -180,6 +201,16 @@ main(argc, argv)
 	exit(0);
 }
 
+void
+logd(const char *fmt, ...)
+{
+	va_list ap;
+	va_start(ap, fmt);
+	if (detailfile != NULL)
+		vfprintf(detailfile, fmt, ap);
+	va_end(ap);
+}
+
 /*
  * makeboard:
  *	Print out the initial board on the screen
@@ -235,6 +266,8 @@ game()
 	BOOLEAN flag;
 	BOOLEAN compcrib;
 
+	logd("newgame: %lld\n", (long long)time(NULL));
+	logd("glimit: %d\n", glimit);
 	compcrib = FALSE;
 	makedeck(deck);
 	shuffle(deck);
@@ -288,6 +321,8 @@ game()
 		compcrib = !compcrib;
 	} while (flag);
 	++gamecount;
+	logd("scores: c=%d, p=%d\n", cscore, pscore);
+	logd("endgame: %lld\n", (long long)time(NULL));
 	if (cscore < pscore) {
 		if (glimit - cscore > 60) {
 			msg("YOU DOUBLE SKUNKED ME!");
@@ -327,7 +362,9 @@ playhand(mycrib)
 	BOOLEAN mycrib;
 {
 	int deckpos;
+	int i;
 
+	logd("newhand: %cdeal\n", mycrib ? 'c' : 'p');
 	werase(Compwin);
 	wrefresh(Compwin);
 	werase(Tablewin);
@@ -337,6 +374,15 @@ playhand(mycrib)
 	deckpos = deal(mycrib);
 	sorthand(chand, FULLHAND);
 	sorthand(phand, FULLHAND);
+
+	logd("chand:");
+	for (i = 0; i < FULLHAND; i++)
+		logd(" %s", cardname(chand[i]));
+	logd("\n%s", "phand:");
+	for (i = 0; i < FULLHAND; i++)
+		logd(" %s", cardname(phand[i]));
+	logd("\n");
+
 	makeknown(chand, FULLHAND);
 	prhand(phand, FULLHAND, Playwin, FALSE);
 	discard(mycrib);
@@ -400,6 +446,8 @@ discard(mycrib)
 	crib[2] = chand[4];
 	crib[3] = chand[5];
 	chand[4].rank = chand[4].suit = chand[5].rank = chand[5].suit = EMPTY;
+	logd("cdiscard: %s %s\n", cardname(crib[2]), cardname(crib[3]));
+	logd("pdiscard: %s %s\n", cardname(crib[0]), cardname(crib[1]));
 }
 
 /*
@@ -442,6 +490,7 @@ cut(mycrib, pos)
 			win = chkscr(&pscore, 2);
 		}
 	}
+	logd("cut: %s\n", cardname(turnover));
 	makeknown(&turnover, 1);
 	prcrib(mycrib, FALSE);
 	return (win);
@@ -513,6 +562,7 @@ peg(mycrib)
 				if (!mego && cnum) {	/* go for comp? */
 					msg("GO");
 					mego = TRUE;
+					logd("cplay: GO\n");
 				}
 							/* can player move? */
 				if (anymove(ph, pnum, sum))
@@ -542,6 +592,7 @@ peg(mycrib)
 				if (j < 0)		/* if nothing scores */
 					j = cchose(ch, cnum, sum);
 				crd = ch[j];
+				logd("cplay: %s\n", cardname(crd));
 				cremove(crd, ch, cnum--);
 				sum += VAL(crd.rank);
 				Table[Tcnt++] = crd;
@@ -560,6 +611,7 @@ peg(mycrib)
 				if (!ugo && pnum) {	/* go for player */
 					msg("You have a GO");
 					ugo = TRUE;
+					logd("pplay: GO\n");
 				}
 							/* can computer play? */
 				if (anymove(ch, cnum, sum))
@@ -590,6 +642,7 @@ peg(mycrib)
 						else
 					msg("Total > 31 -- try again");
 					}
+				logd("pplay: %s\n", cardname(crd));
 				makeknown(&crd, 1);
 				cremove(crd, ph, pnum--);
 				i = pegscore(crd, Table, Tcnt, sum);

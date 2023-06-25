@@ -1,0 +1,13 @@
+*.o
+*.d
+*.swp
+/subst.*
+/hide-game
+/include/bsd-games.h
+/install-man
+/install-score
+/GNUmakefile
+/Makeconfig
+/cribbage/cribbage
+/cribbage/cribbage.6
+/cribbage/pathnames.h

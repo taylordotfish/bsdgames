@@ -67,6 +67,7 @@ int	 adjust(const CARD [], CARD);
 int	 anymove(const CARD [], int, int);
 int	 anysumto(const CARD [], int, int, int);
 void	 bye(void);
+const char *cardname(CARD);
 int	 cchose(const CARD [], int, int);
 void	 cdiscard(BOOLEAN);
 int	 chkscr(int *, int);
@@ -87,6 +88,8 @@ int	 incard(CARD *);
 int	 infrom(const CARD [], int, const char *);
 void	 instructions(void);
 int	 is_one(CARD, const CARD [], int);
+void     logd(const char *, ...)
+    __attribute__((__format__(__printf__, 1, 2)));
 void	 makeboard(void);
 void	 makedeck(CARD []);
 void	 makeknown(const CARD [], int);

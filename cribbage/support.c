@@ -143,9 +143,11 @@ plyrhand(hand, s)
 			msg("It's really only %d points; I get %d", i, 2);
 			if (!win)
 				win = chkscr(&cscore, 2);
+			logd("scorechange: c+2\n");
 		} else {
 			win = chkscr(&pscore, j);
 			msg("You should have taken %d, not %d!", i, j);
+			logd("scorechange: p-%d\n", i - j);
 		}
 		if (explain)
 			msg("Explanation: %s", explan);
