@@ -465,12 +465,14 @@ cut(mycrib, pos)
 
 	win = FALSE;
 	if (mycrib) {
-		if (!rflag) {	/* random cut */
-			msg(quiet ? "Cut the deck? " :
-		    "How many cards down do you wish to cut the deck? ");
-			get_line();
+		if (rflag) {	/* random cut */
+			i = (rand() >> 4) % (CARDS - pos - MINCUT * 2);
+			i += MINCUT;
+		} else {
+			i = number(MINCUT, CARDS - pos - MINCUT, quiet ?
+			    "Cut the deck? " : "How many cards down do "
+			    "you wish to cut the deck? ");
 		}
-		i = (rand() >> 4) % (CARDS - pos);
 		turnover = deck[i + pos];
 		addmsg(quiet ? "You cut " : "You cut the ");
 		msgcard(turnover, FALSE);
@@ -480,7 +482,8 @@ cut(mycrib, pos)
 			win = chkscr(&cscore, 2);
 		}
 	} else {
-		i = (rand() >> 4) % (CARDS - pos) + pos;
+		i = (rand() >> 4) % (CARDS - pos - MINCUT * 2);
+		i += MINCUT + pos;
 		turnover = deck[i];
 		addmsg(quiet ? "I cut " : "I cut the ");
 		msgcard(turnover, FALSE);

@@ -66,6 +66,7 @@
 #define		KING		12
 #define		EMPTY		13
 
+#define		MINCUT		4	/* min cards in each half after cut */
 #define		VAL(c)		( (c) < 9 ? (c)+1 : 10 )    /* val of rank */
 
 
