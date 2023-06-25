@@ -69,6 +69,7 @@ main(argc, argv)
 	int ch;
 	int fd;
 	int flags;
+	gid_t gid;
 
 	f = NULL;
 	fd = open(_PATH_LOG, O_WRONLY | O_CREAT | O_EXCL, 0666);
@@ -87,7 +88,9 @@ main(argc, argv)
 		exit(1);
 
 	/* Revoke setgid privileges */
-	setregid(getgid(), getgid());
+	gid = getgid();
+	if (gid != getegid())
+		setregid(gid, gid);
 
 	/* Set close-on-exec flag on log file */
 	if (f != NULL) {
