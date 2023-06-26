@@ -49,7 +49,7 @@ extern  int		cgames;			/* comp's games won */
 extern  int		pskunk;			/* player's games skunked */
 extern  int		cskunk;			/* comp's games skunked */
 extern  int		pdblskunk;		/* player's games 2x skunked */
-extern  int     	cdblskunk;		/* comp's games 2x skunked */
+extern  int		cdblskunk;		/* comp's games 2x skunked */
 extern  int		gamecount;		/* # games played */
 extern	int		Lastscore[2];		/* previous score for each */
 
@@ -58,6 +58,7 @@ extern  BOOLEAN		explain;		/* player mistakes explained */
 extern  BOOLEAN		rflag;			/* if all cuts random */
 extern  BOOLEAN		quiet;			/* if suppress random mess */
 extern	BOOLEAN		playing;		/* currently playing game */
+extern  BOOLEAN		realshuf;		/* realistic shuffling */
 
 extern  char		explan[];		/* string for explanation */
 
@@ -71,6 +72,7 @@ const char *cardname(CARD);
 int	 cchose(const CARD [], int, int);
 void	 cdiscard(BOOLEAN);
 int	 chkscr(int *, int);
+void	 cmove(CARD [], int, int);
 int	 comphand(const CARD [], const char *);
 void	 cremove(CARD, CARD [], int);
 int	 cut(BOOLEAN, int);
@@ -90,6 +92,7 @@ void	 instructions(void);
 int	 is_one(CARD, const CARD [], int);
 void     logd(const char *, ...)
     __attribute__((__format__(__printf__, 1, 2)));
+void	 logdeck(CARD []);
 void	 makeboard(void);
 void	 makedeck(CARD []);
 void	 makeknown(const CARD [], int);

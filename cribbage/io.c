@@ -96,6 +96,20 @@ cardname(c)
 	return cardnames[c.rank * 4 + c.suit];
 }
 
+void
+logdeck(d)
+	CARD d[];
+{
+	int i;
+	logd("deck: ");
+	for (i = 0; i < CARDS; i++)
+		logd("%c", cardname(d[i])[0]);
+	logd("\n%s", "deck: ");
+	for (i = 0; i < CARDS; i++)
+		logd("%c", cardname(d[i])[1]);
+	logd("\n");
+}
+
 /*
  * msgcard:
  *	Call msgcrd in one of two forms

@@ -47,6 +47,7 @@ BOOLEAN	explain		= FALSE;	/* player mistakes explained */
 BOOLEAN	iwon		= FALSE;	/* if comp won last game */
 BOOLEAN	quiet		= FALSE;	/* if suppress random mess */
 BOOLEAN	rflag		= FALSE;	/* if all cuts random */
+BOOLEAN	realshuf	= FALSE;	/* realistic shuffling */
 
 char	explan[128];			/* explanation */
 

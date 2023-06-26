@@ -140,6 +140,7 @@ main(argc, argv)
 		detailfile = fopen(detailpath, "a");
 	if (detailfile != NULL)
 		closeonexec(detailfile);
+	realshuf = getenv("REALISTICSHUFFLE") != NULL;
 
 	initscr();
 	(void)signal(SIGINT, receive_intr);
@@ -265,24 +266,37 @@ game()
 	int i, j;
 	BOOLEAN flag;
 	BOOLEAN compcrib;
+	BOOLEAN oldrealshuf;
 
 	logd("newgame: %lld\n", (long long)time(NULL));
 	logd("glimit: %d\n", glimit);
+	logd("shuffle: %s\n", realshuf ? "realistic" : "uniform");
 	compcrib = FALSE;
 	makedeck(deck);
+
+	oldrealshuf = realshuf;
+	realshuf = FALSE;
 	shuffle(deck);
+	realshuf = oldrealshuf;
 	if (gamecount == 0) {
 		flag = TRUE;
 		do {
-			if (!rflag) {			/* player cuts deck */
-				msg(quiet ? "Cut for crib? " :
-			    "Cut to see whose crib it is -- low card wins? ");
-				get_line();
+			if (rflag) {	/* random cut */
+				i = (rand() >> 4) % (CARDS / 2 - MINCUT);
+				i += MINCUT;
+			} else {
+				if (!quiet)
+					msg("Cut to see whose crib it is -- "
+					    "low card wins");
+				i = number(MINCUT, CARDS / 2, quiet ?
+				    "Cut for crib? " : "How many cards down "
+				    "do you wish to cut the deck? ");
 			}
-			i = (rand() >> 4) % CARDS;	/* random cut */
-			do {	/* comp cuts deck */
-				j = (rand() >> 4) % CARDS;
-			} while (j == i);
+			/* comp cuts deck */
+			j = (rand() >> 4) % (CARDS - i - MINCUT * 2);
+			j += i + MINCUT;
+			logd("pcut: %s\n", cardname(deck[i]));
+			logd("ccut: %s\n", cardname(deck[j]));
 			addmsg(quiet ? "You cut " : "You cut the ");
 			msgcard(deck[i], FALSE);
 			endmsg();
@@ -474,6 +488,7 @@ cut(mycrib, pos)
 			    "you wish to cut the deck? ");
 		}
 		turnover = deck[i + pos];
+		cmove(deck, i + pos, pos);
 		addmsg(quiet ? "You cut " : "You cut the ");
 		msgcard(turnover, FALSE);
 		endmsg();
@@ -485,6 +500,7 @@ cut(mycrib, pos)
 		i = (rand() >> 4) % (CARDS - pos - MINCUT * 2);
 		i += MINCUT + pos;
 		turnover = deck[i];
+		cmove(deck, i, pos);
 		addmsg(quiet ? "I cut " : "I cut the ");
 		msgcard(turnover, FALSE);
 		endmsg();
