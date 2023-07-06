@@ -348,9 +348,8 @@ pegscore(crd, tbl, n, sum)
  * points such a crib will get.
  */
 int
-adjust(cb, tnv)
+adjust(cb)
 	const CARD cb[];
-	CARD tnv __attribute__((__unused__));
 {
 	long scr;
 	int i, c0, c1;
@@ -370,5 +369,5 @@ adjust(cb, tnv)
 		printf("\nADJUST: internal error %d %d\n", c0, c1);
 		exit(93);
 	}
-	return ((scr + 29400) / 58800);
+	return scr;
 }

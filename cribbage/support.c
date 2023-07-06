@@ -272,11 +272,11 @@ cdiscard(mycrib)
 			for (k = 0; k < nc; k++) {
 				sums[ns] +=
 				    scorehand(h, d[k], CINHAND, FALSE, FALSE);
-				if (mycrib)
-					sums[ns] += adjust(cb, d[k]);
-				else
-					sums[ns] -= adjust(cb, d[k]);
 			}
+			if (mycrib)
+				sums[ns] += adjust(cb) * nc / 58800;
+			else
+				sums[ns] -= adjust(cb) * nc / 58800;
 			++ns;
 		}
 	}

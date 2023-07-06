@@ -64,7 +64,7 @@ extern  char		explan[];		/* string for explanation */
 
 void	 addmsg(const char *, ...)
     __attribute__((__format__(__printf__, 1, 2)));
-int	 adjust(const CARD [], CARD);
+int	 adjust(const CARD []);
 int	 anymove(const CARD [], int, int);
 int	 anysumto(const CARD [], int, int, int);
 void	 bye(void);
