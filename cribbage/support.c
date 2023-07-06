@@ -271,7 +271,7 @@ cdiscard(mycrib)
 			cremove(chand[j], h, FULLHAND - 1);
 			for (k = 0; k < nc; k++) {
 				sums[ns] +=
-				    scorehand(h, d[k], CINHAND, TRUE, FALSE);
+				    scorehand(h, d[k], CINHAND, FALSE, FALSE);
 				if (mycrib)
 					sums[ns] += adjust(cb, d[k]);
 				else
