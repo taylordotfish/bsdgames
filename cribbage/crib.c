@@ -269,7 +269,7 @@ game()
 	BOOLEAN oldrealshuf;
 
 	logd("newgame: %lld\n", (long long)time(NULL));
-	logd("version: %d\n", VERSION);
+	logd("version: %d%s\n", VERSION, VERSION_IS_DEV ? "-dev" : "");
 	logd("glimit: %d\n", glimit);
 	logd("shuffle: %s\n", realshuf ? "realistic" : "uniform");
 	compcrib = FALSE;

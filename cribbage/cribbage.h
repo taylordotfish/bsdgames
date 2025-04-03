@@ -31,7 +31,8 @@
  *	@(#)cribbage.h	8.1 (Berkeley) 5/31/93
  */
 
-#define VERSION 5
+#define VERSION 6
+#define VERSION_IS_DEV 1
 
 extern  CARD		deck[ CARDS ];		/* a deck */
 extern  CARD		phand[ FULLHAND ];	/* player's hand */
