@@ -346,6 +346,9 @@ pegscore(crd, tbl, n, sum)
  * adjust takes a two card hand that will be put in the crib
  * and returns an adjusted normalized score for the number of
  * points such a crib will get.
+ *
+ * the score is multiplied by 58800 to minimize loss of precision
+ * and should be divided by that number later.
  */
 int
 adjust(cb)
