@@ -1,3 +1,29 @@
+taylor.fish fork of bsd-games
+-----------------------------
+
+The version of `cribbage` in this repository contains the following
+modifications:
+
+* Fixed errors in pre-calculated score tables, and added a program to
+  generate these tables.
+* Fixed additional bugs affecting which cards the computer chooses to
+  discard.
+* If the environment variable `REALISTICSHUFFLE` is non-empty, the
+  computer will simulate overhand and riffle shuffling instead of
+  completely randomizing the deck.
+* More detail is stored in `criblog` (game time and skunk info).
+* If the environment variable `CRIBDETAIL` is set to the path of a
+  file, verbose game information will be appended to that file
+  (creating it if necessary).
+
+The modifications in this repository are licensed under the same
+license as the original (the 3-clause BSD license), except for the
+files in `cribbage/generate-score-tables`, which constitute a separate
+program licensed under version 3 or later of the GNU General Public
+license.
+
+----------------------------------------------------------------------
+
 README for bsd-games
 ====================
 
